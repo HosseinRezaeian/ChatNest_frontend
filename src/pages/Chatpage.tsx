@@ -1,3 +1,4 @@
+import { useGetListContacts } from '@/api/Contact';
 import {
     AppShell,
     Burger,
@@ -32,6 +33,8 @@ import {
     const isMobile = useMediaQuery('(max-width: 768px)');
     const [message, setMessage] = useState('');
     const [currentContact, setCurrentContact] = useState(contacts[0]);
+    
+    const {data:contactss}=useGetListContacts()
   
     // پیام‌ها برای هر مخاطب بصورت شیء با متن، فرستنده و زمان ذخیره شده
     const [allMessages, setAllMessages] = useState<Record<string, { text: string; fromMe: boolean; time: string }[]>>({
@@ -154,9 +157,8 @@ import {
           ))}
         </AppShell.Navbar>
   
-        <AppShell.Main
-
-        >
+        <AppShell.Main>
+          {JSON.stringify(contactss)}
           {/* بخش پیام‌ها */}
           <ScrollArea style={{ flex: 1, padding: rem(16) }}>
             <Stack gap={8}>

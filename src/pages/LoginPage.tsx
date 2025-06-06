@@ -1,18 +1,50 @@
+import { useLoginMutation } from '@/api/Login';
 import {
-    Box,
-    Text,
-    TextInput,
-    PasswordInput,
-    Button,
-    Stack,
-    Anchor,
-    Center,
-    rem,
-  } from '@mantine/core';
-  import { IconAt, IconLock } from '@tabler/icons-react';
-  
-  export function SimpleLogin() {
-    return (
+  Box,
+  Text,
+  TextInput,
+  PasswordInput,
+  Button,
+  Stack,
+  Anchor,
+  Center,
+  rem,
+} from '@mantine/core';
+import { useForm } from '@mantine/form';
+import { IconAt, IconLock } from '@tabler/icons-react';
+import { useNavigate } from 'react-router-dom';
+
+export function SimpleLogin() {
+  const [login, { isLoading, isSuccess }] = useLoginMutation();
+  const navigate = useNavigate();
+  const handleLogin = async (credentials: { username: string; password: string }) => {
+    try {
+      const result = await login(credentials).unwrap();
+      console.log(result.access, isSuccess)
+      localStorage.setItem('access', result.access);
+      localStorage.setItem('refresh', result.refresh);
+
+      navigate("/chat")
+
+    } catch (err) {
+      console.error('Login failed:', err);
+    }
+  };
+
+  const form = useForm({
+    mode: 'uncontrolled',
+    initialValues: {
+      username: '',
+      password: "",
+    },
+
+    // validate: {
+    //   email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
+    // },
+  });
+
+  return (
+    <form onSubmit={form.onSubmit((values) => handleLogin(values))}>
       <Box
         style={{
           backgroundColor: '#1e1e2f',
@@ -36,11 +68,11 @@ import {
           <Stack gap="xl">
             {/* عنوان */}
             <Center>
-              <Text 
-                size="xl" 
-                fw={700} 
-                style={{ 
-                  color: '#75e6da', 
+              <Text
+                size="xl"
+                fw={700}
+                style={{
+                  color: '#75e6da',
                   fontSize: rem(28),
                   marginBottom: rem(8),
                 }}
@@ -48,12 +80,16 @@ import {
                 ChatNest
               </Text>
             </Center>
-  
+
             {/* فیلد ایمیل */}
             <TextInput
-              label="ایمیل"
+              label="نام کاربری"
               placeholder="example@mail.com"
               leftSection={<IconAt size={16} />}
+
+              key={form.key('username')}
+              {...form.getInputProps('username')}
+
               styles={{
                 input: {
                   backgroundColor: '#3e3e4e',
@@ -66,12 +102,16 @@ import {
                 },
               }}
             />
-  
-            {/* فیلد رمز عبور */}
+
             <PasswordInput
               label="رمز عبور"
               placeholder="رمز عبور خود را وارد کنید"
               leftSection={<IconLock size={16} />}
+
+              key={form.key('password')}
+              {...form.getInputProps('password')}
+
+
               styles={{
                 input: {
                   backgroundColor: '#3e3e4e',
@@ -87,9 +127,8 @@ import {
                 },
               }}
             />
-  
-            {/* دکمه ورود */}
             <Button
+              type="submit"
               fullWidth
               mt="md"
               style={{
@@ -104,7 +143,7 @@ import {
             >
               ورود به حساب
             </Button>
-  
+
             {/* لینک ثبت نام */}
             <Center mt="sm">
               <Anchor
@@ -124,5 +163,6 @@ import {
           </Stack>
         </Box>
       </Box>
-    );
-  }
+    </form>
+  );
+}
