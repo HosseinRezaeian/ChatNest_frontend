@@ -1,0 +1,59 @@
+import { useGetListContacts } from "@/api/Contact";
+import { Icontact } from "@/models/contactModel";
+import { Avatar, Box, rem, Text, TextInput } from "@mantine/core"
+import { useDisclosure, useMediaQuery } from "@mantine/hooks";
+import { useState } from "react";
+
+
+
+
+
+
+interface ContentsProps {
+    contacts:Icontact[]
+    currentContact: Icontact | null;
+    setCurrentContact: (contact: Icontact) => void;
+  }
+  
+
+const Contents = ({contacts, currentContact, setCurrentContact }: ContentsProps) => {
+    const [opened, { toggle }] = useDisclosure();
+
+    const isMobile = useMediaQuery('(max-width: 768px)');
+    const [searchTerm, setSearchTerm] = useState('');
+    const filteredContacts = contacts?.filter(contact =>
+        contact.target.username.includes(searchTerm)
+    );
+
+    return (
+        <>
+            <TextInput onChange={(e) => { setSearchTerm(e.currentTarget.value.trim()) }} placeholder='جستوجو...' pb={"20"}></TextInput>
+            {filteredContacts?.map((contact) => (
+                <Box
+                    key={contact.target.username}
+                    mb="sm"
+                    onClick={() => {
+                        setCurrentContact(contact);
+                        if (isMobile) toggle();
+                    }}
+                    style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: rem(8),
+                        cursor: 'pointer',
+                        padding: rem(8),
+                        borderRadius: rem(6),
+                        transition: 'background 0.2s ease',
+                        backgroundColor: currentContact === contact ? '#189ab4' : 'transparent',
+                        userSelect: 'none',
+                    }}
+                >
+                    <Avatar size={30} radius="xl">{contact.target.username}</Avatar>
+                    <Text>{contact.target.username}</Text>
+                </Box>
+            ))}
+
+        </>
+    )
+}
+export default Contents

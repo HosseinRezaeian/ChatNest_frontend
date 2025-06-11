@@ -6,7 +6,7 @@ import { Icontact } from '@/models/contactModel';
 export const ContactsApi = api.injectEndpoints({
 
   endpoints: (builder) => ({
-    getListContacts: builder.query<Icontact,void>({
+    getListContacts: builder.query<Icontact[],void>({
       query: () => ({
         url: 'contacts/get_contact/',
         method: 'GET',
