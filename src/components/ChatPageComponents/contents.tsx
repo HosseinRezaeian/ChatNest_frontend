@@ -1,7 +1,8 @@
 import { useGetListContacts } from "@/api/Contact";
 import { Icontact } from "@/models/contactModel";
-import { Avatar, Box, rem, Text, TextInput } from "@mantine/core"
+import { ActionIcon, Avatar, Box, Drawer, Flex, Group, rem, Text, TextInput } from "@mantine/core"
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
+import { IconArrowLeft, IconHeart, IconMenu2 } from "@tabler/icons-react";
 import { useState } from "react";
 
 
@@ -10,14 +11,16 @@ import { useState } from "react";
 
 
 interface ContentsProps {
-    contacts:Icontact[]
+    contacts: Icontact[]
     currentContact: Icontact | null;
     setCurrentContact: (contact: Icontact) => void;
-  }
-  
+    navbarOpened: boolean;
+    toggleNavbar: () => void;
+}
 
-const Contents = ({contacts, currentContact, setCurrentContact }: ContentsProps) => {
-    const [opened, { toggle }] = useDisclosure();
+
+const Contents = ({ contacts, currentContact, setCurrentContact,navbarOpened,toggleNavbar }: ContentsProps) => {
+    const [drawerOpened, { toggle: toggleDrawer }] = useDisclosure(false);
 
     const isMobile = useMediaQuery('(max-width: 768px)');
     const [searchTerm, setSearchTerm] = useState('');
@@ -27,6 +30,33 @@ const Contents = ({contacts, currentContact, setCurrentContact }: ContentsProps)
 
     return (
         <>
+{JSON.stringify(isMobile)}
+{JSON.stringify(navbarOpened)}
+            <Flex justify="space-between" align="center">
+                <ActionIcon
+                    variant="subtle"
+                    size="input-xs"
+                    c={"white"}
+                    onClick={toggleDrawer}
+                    aria-label="Gradient action icon"
+                >
+                    <IconMenu2 />
+                </ActionIcon>
+{isMobile ? (                <ActionIcon
+                    variant="subtle"
+                    size="input-xs"
+                    c={"white"}
+                    onClick={toggleNavbar}
+                    aria-label="Gradient action icon"
+                >
+                    <IconArrowLeft />
+                </ActionIcon>) : null}
+
+            </Flex>
+
+            <Drawer position="left" size="xs" opened={drawerOpened} onClose={toggleDrawer} title="Authentication">
+
+            </Drawer>
             <TextInput onChange={(e) => { setSearchTerm(e.currentTarget.value.trim()) }} placeholder='جستوجو...' pb={"20"}></TextInput>
             {filteredContacts?.map((contact) => (
                 <Box
@@ -34,7 +64,7 @@ const Contents = ({contacts, currentContact, setCurrentContact }: ContentsProps)
                     mb="sm"
                     onClick={() => {
                         setCurrentContact(contact);
-                        if (isMobile) toggle();
+                        if (isMobile) toggleNavbar();
                     }}
                     style={{
                         display: 'flex',
