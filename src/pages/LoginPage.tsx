@@ -17,7 +17,7 @@ import { useNavigate } from 'react-router-dom';
 export function SimpleLogin() {
   const [login, { isLoading, isSuccess }] = useLoginMutation();
   const navigate = useNavigate();
-  const handleLogin = async (credentials: { username: string; password: string }) => {
+  const handleLogin = async (credentials: { email: string; password: string }) => {
     try {
       const result = await login(credentials).unwrap();
       console.log(result.access, isSuccess)
@@ -34,7 +34,7 @@ export function SimpleLogin() {
   const form = useForm({
     mode: 'uncontrolled',
     initialValues: {
-      username: '',
+      email: '',
       password: "",
     },
 
@@ -83,12 +83,12 @@ export function SimpleLogin() {
 
             {/* فیلد ایمیل */}
             <TextInput
-              label="نام کاربری"
+              label="ایمیل"
               placeholder="example@mail.com"
               leftSection={<IconAt size={16} />}
 
-              key={form.key('username')}
-              {...form.getInputProps('username')}
+              key={form.key('email')}
+              {...form.getInputProps('email')}
 
               styles={{
                 input: {
