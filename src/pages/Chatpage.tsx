@@ -110,10 +110,11 @@ export function ChatAppShell() {
 
       <AppShell.Navbar
         p="md"
+        hidden={opened}
         component={ScrollArea}
         style={{ backgroundColor: '#2c2c3e', color: 'white' }}
       >
-        <Contents contacts={contacts as Icontact[]} currentContact={currentContact as Icontact} setCurrentContact={setCurrentContact}  />
+        <Contents navbarOpened={opened} toggleNavbar={toggle} contacts={contacts as Icontact[]} currentContact={currentContact as Icontact} setCurrentContact={setCurrentContact}  />
       </AppShell.Navbar>
 
       <AppShell.Main>
