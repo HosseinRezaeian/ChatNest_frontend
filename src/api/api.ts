@@ -1,7 +1,8 @@
 // src/api/api.ts
 import { createApi, fetchBaseQuery, FetchArgs, FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
+const baseUrl = import.meta.env.VITE_SERVER_ADDRESS;
 
-const baseUrl = 'http://localhost:8000/api/';
+// const baseUrl = serverAddress;
 
 const baseQuery = fetchBaseQuery({
   baseUrl,

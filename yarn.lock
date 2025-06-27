@@ -775,8 +775,8 @@ __metadata:
   linkType: hard
 
 "@mantine/core@npm:^8.0.2":
-  version: 8.0.2
-  resolution: "@mantine/core@npm:8.0.2"
+  version: 8.1.0
+  resolution: "@mantine/core@npm:8.1.0"
   dependencies:
     "@floating-ui/react": "npm:^0.26.28"
     clsx: "npm:^2.1.1"
@@ -785,31 +785,31 @@ __metadata:
     react-textarea-autosize: "npm:8.5.9"
     type-fest: "npm:^4.27.0"
   peerDependencies:
-    "@mantine/hooks": 8.0.2
+    "@mantine/hooks": 8.1.0
     react: ^18.x || ^19.x
     react-dom: ^18.x || ^19.x
-  checksum: 10c0/10ca6258bcc4e475fbb213724ad6e654396434d7345a315c60880c7fc639ffaa5b42b85d3e768364fcb869042357a52cfd6532dfc6daf1b5ba5370a9ca15936d
+  checksum: 10c0/55c0b1b3d5d2e2543a1bf98cc12d45f2b64772f224ac58d56c0ebf3c14b633dd60dfe2a0a90e8765c76fb69e7ee41cab98da3a7920102d79d4904cdf9b690e3a
   languageName: node
   linkType: hard
 
 "@mantine/form@npm:^8.0.2":
-  version: 8.0.2
-  resolution: "@mantine/form@npm:8.0.2"
+  version: 8.1.0
+  resolution: "@mantine/form@npm:8.1.0"
   dependencies:
     fast-deep-equal: "npm:^3.1.3"
     klona: "npm:^2.0.6"
   peerDependencies:
     react: ^18.x || ^19.x
-  checksum: 10c0/8bd1900df19f0855092dbdb32a563ab2eac58089cad543ef35b69092b6480b2b55ac174a7d45f7ad8c2d536be20ff9c4fadae5ba31cb273919846b9e6339db0a
+  checksum: 10c0/39dea02a4455a4290f3b6a0ed2bd2726b67e9a036a69051b599d0272eec517f58e0da95d7e52d90e1fdfa16201db1390f4d1cfb8969737f10a80ba2eae38b2a1
   languageName: node
   linkType: hard
 
 "@mantine/hooks@npm:^8.0.2":
-  version: 8.0.2
-  resolution: "@mantine/hooks@npm:8.0.2"
+  version: 8.1.0
+  resolution: "@mantine/hooks@npm:8.1.0"
   peerDependencies:
     react: ^18.x || ^19.x
-  checksum: 10c0/1c68325ee0093923c7bbbde7f1b39600ae72751f254bd336989afe50d08a9c14810465ddfdb62e261e83711d334c292d6ac789a546a8df0e14a2f4f51812efda
+  checksum: 10c0/65c0f7c04b5019aafe5a924971b8706ecb1e73df786c5368ab59cd78f9258778bfd3bb880d7288d10e6ac2ecdef273bfbc8ce7ff080dfd4644be829321967fe2
   languageName: node
   linkType: hard
 
@@ -5738,12 +5738,12 @@ __metadata:
   linkType: hard
 
 "socks@npm:^2.8.3":
-  version: 2.8.4
-  resolution: "socks@npm:2.8.4"
+  version: 2.8.5
+  resolution: "socks@npm:2.8.5"
   dependencies:
     ip-address: "npm:^9.0.5"
     smart-buffer: "npm:^4.2.0"
-  checksum: 10c0/00c3271e233ccf1fb83a3dd2060b94cc37817e0f797a93c560b9a7a86c4a0ec2961fb31263bdd24a3c28945e24868b5f063cd98744171d9e942c513454b50ae5
+  checksum: 10c0/e427d0eb0451cfd04e20b9156ea8c0e9b5e38a8d70f21e55c30fbe4214eda37cfc25d782c63f9adc5fbdad6d062a0f127ef2cefc9a44b6fee2b9ea5d1ed10827
   languageName: node
   linkType: hard
 
