@@ -23,6 +23,7 @@ export function SimpleLogin() {
       console.log(result.access, isSuccess)
       localStorage.setItem('access', result.access);
       localStorage.setItem('refresh', result.refresh);
+      
 
       navigate("/chat")
 

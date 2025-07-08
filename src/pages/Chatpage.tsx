@@ -1,3 +1,4 @@
+import { useProfileQuery } from '@/api/api';
 import { useGetListContacts } from '@/api/Contact';
 import Contents from '@/components/ChatPageComponents/contents';
 import { Icontact } from '@/models/contactModel';
@@ -29,6 +30,7 @@ function formatTime(date: Date) {
 }
 
 export function ChatAppShell() {
+  const { data: userProfile, isLoading, error } = useProfileQuery();
   const { data: contacts } = useGetListContacts()
   const [opened, { toggle }] = useDisclosure();
   const theme = useMantineTheme();
@@ -122,6 +124,7 @@ export function ChatAppShell() {
         {/* بخش پیام‌ها */}
         <ScrollArea style={{ flex: 1, padding: rem(16) }}>
           <Stack gap={8}>
+            {userProfile ? userProfile.username : 'در حال بارگذاری...'}
             {/* {messages.map(({ text, fromMe, time }, i) => (
               <Box
                 key={i}

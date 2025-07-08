@@ -4,6 +4,7 @@ import { ActionIcon, Avatar, Box, Drawer, Flex, Group, rem, Text, TextInput } fr
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { IconArrowLeft, IconHeart, IconMenu2 } from "@tabler/icons-react";
 import { useState } from "react";
+import { LeftDrawer } from "./leftDrawer";
 
 
 
@@ -19,7 +20,7 @@ interface ContentsProps {
 }
 
 
-const Contents = ({ contacts, currentContact, setCurrentContact,navbarOpened,toggleNavbar }: ContentsProps) => {
+const Contents = ({ contacts, currentContact, setCurrentContact, navbarOpened, toggleNavbar }: ContentsProps) => {
     const [drawerOpened, { toggle: toggleDrawer }] = useDisclosure(false);
 
     const isMobile = useMediaQuery('(max-width: 768px)');
@@ -30,8 +31,6 @@ const Contents = ({ contacts, currentContact, setCurrentContact,navbarOpened,tog
 
     return (
         <>
-{JSON.stringify(isMobile)}
-{JSON.stringify(navbarOpened)}
             <Flex justify="space-between" align="center">
                 <ActionIcon
                     variant="subtle"
@@ -42,7 +41,7 @@ const Contents = ({ contacts, currentContact, setCurrentContact,navbarOpened,tog
                 >
                     <IconMenu2 />
                 </ActionIcon>
-{isMobile ? (                <ActionIcon
+                {isMobile ? (<ActionIcon
                     variant="subtle"
                     size="input-xs"
                     c={"white"}
@@ -54,9 +53,7 @@ const Contents = ({ contacts, currentContact, setCurrentContact,navbarOpened,tog
 
             </Flex>
 
-            <Drawer position="left" size="xs" opened={drawerOpened} onClose={toggleDrawer} title="Authentication">
-
-            </Drawer>
+            <LeftDrawer drawerOpened={drawerOpened} toggleDrawer={toggleDrawer}/>
             <TextInput onChange={(e) => { setSearchTerm(e.currentTarget.value.trim()) }} placeholder='جستوجو...' pb={"20"}></TextInput>
             {filteredContacts?.map((contact) => (
                 <Box
