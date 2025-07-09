@@ -1,6 +1,8 @@
+import { ProfileApi } from '@/api/ profileApi';
 import { useProfileQuery } from '@/api/api';
 import { useGetListContacts } from '@/api/Contact';
 import Contents from '@/components/ChatPageComponents/contents';
+import { setUser } from '@/features/users/userSlice';
 import { Icontact } from '@/models/contactModel';
 import {
   AppShell,
@@ -21,8 +23,8 @@ import {
 } from '@mantine/core';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { IconSend } from '@tabler/icons-react';
-import { useState } from 'react';
-
+import { useEffect, useState } from 'react';
+import { useDispatch } from "react-redux";
 
 function formatTime(date: Date) {
   // قالب زمان: ساعت:دقیقه (24 ساعته)
@@ -30,19 +32,19 @@ function formatTime(date: Date) {
 }
 
 export function ChatAppShell() {
-  const { data: userProfile, isLoading, error } = useProfileQuery();
+  const { data: userProfile,isSuccess, isLoading, error } = useProfileQuery();
   const { data: contacts } = useGetListContacts()
   const [opened, { toggle }] = useDisclosure();
   const theme = useMantineTheme();
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [message, setMessage] = useState('');
   const [currentContact, setCurrentContact] = useState<Icontact | null>(null);
-
-
-
-
-
-
+const dispatch = useDispatch();
+useEffect(() => {
+    if (isSuccess && userProfile) {
+      dispatch(setUser(userProfile));
+    }
+  }, [isSuccess, userProfile]);
 
   const handleSend = () => {
     if (message.trim() === '') return;
@@ -190,3 +192,4 @@ export function ChatAppShell() {
     </AppShell>
   );
 }
+

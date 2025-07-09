@@ -1,4 +1,5 @@
 import { useLoginMutation } from '@/api/Login';
+import { setUser } from '@/features/users/userSlice';
 import {
   Box,
   Text,
@@ -12,17 +13,20 @@ import {
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { IconAt, IconLock } from '@tabler/icons-react';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 export function SimpleLogin() {
   const [login, { isLoading, isSuccess }] = useLoginMutation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const handleLogin = async (credentials: { email: string; password: string }) => {
     try {
       const result = await login(credentials).unwrap();
       console.log(result.access, isSuccess)
       localStorage.setItem('access', result.access);
       localStorage.setItem('refresh', result.refresh);
+      
       
 
       navigate("/chat")
