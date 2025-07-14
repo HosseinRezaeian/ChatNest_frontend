@@ -1,7 +1,7 @@
 import { ProfileApi } from '@/api/ profileApi';
 import { useProfileQuery } from '@/api/api';
 import { useGetListContacts } from '@/api/Contact';
-import Contents from '@/components/ChatPageComponents/contents';
+import Rooms from '@/components/ChatPageComponents/rooms';
 import { setUser } from '@/features/users/userSlice';
 import { Icontact } from '@/models/contactModel';
 import {
@@ -118,7 +118,7 @@ useEffect(() => {
         component={ScrollArea}
         style={{ backgroundColor: '#2c2c3e', color: 'white' }}
       >
-        <Contents navbarOpened={opened} toggleNavbar={toggle} contacts={contacts as Icontact[]} currentContact={currentContact as Icontact} setCurrentContact={setCurrentContact}  />
+        <Rooms navbarOpened={opened} toggleNavbar={toggle} contacts={contacts as Icontact[]} currentContact={currentContact as Icontact} setCurrentContact={setCurrentContact}  />
       </AppShell.Navbar>
 
       <AppShell.Main>

@@ -20,7 +20,7 @@ interface ContentsProps {
 }
 
 
-const Contents = ({ contacts, currentContact, setCurrentContact, navbarOpened, toggleNavbar }: ContentsProps) => {
+const Rooms = ({ contacts, currentContact, setCurrentContact, navbarOpened, toggleNavbar }: ContentsProps) => {
     const [drawerOpened, { toggle: toggleDrawer }] = useDisclosure(false);
 
     const isMobile = useMediaQuery('(max-width: 768px)');
@@ -83,4 +83,4 @@ const Contents = ({ contacts, currentContact, setCurrentContact, navbarOpened, t
         </>
     )
 }
-export default Contents
+export default Rooms

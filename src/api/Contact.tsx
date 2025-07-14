@@ -9,21 +9,23 @@ export const ContactsApi = api.injectEndpoints({
     getListContacts: builder.query<Icontact[], void>({
       query: () => ({
         url: 'contacts/get_contact/',
-        method: 'GET',
+        method: 'GET'
 
       }),
+        providesTags: () => [{ type: 'Contacts', id: 'LIST' }],
     }),
 
     searchContacts: builder.mutation<{ id: string }, { search: string }>({
-      query: ({search}) => ({
+      query: ({ search }) => ({
         url: 'contacts/add_contact/',
         method: 'POST',
-        params: { search }
-      })
+        params: { search },
 
+      }),
+      invalidatesTags: [{ type: 'Contacts', id: 'LIST' }]
     })
   }),
 });
 
-export const { useGetListContactsQuery: useGetListContacts, 
-  useSearchContactsMutation:useSearchContacts } = ContactsApi;
+export const { useGetListContactsQuery: useGetListContacts,
+  useSearchContactsMutation: useSearchContacts } = ContactsApi;

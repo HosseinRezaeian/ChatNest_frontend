@@ -68,7 +68,13 @@ interface UserProfile {
 export const api = createApi({
   reducerPath: 'api',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['User', 'Auth'],
+  tagTypes: [
+    'User',
+    'Auth',
+    'Contacts'
+
+  ],
+
   endpoints: (builder) => ({
     login: builder.mutation<LoginResponse, LoginRequest>({
       query: (credentials) => ({
