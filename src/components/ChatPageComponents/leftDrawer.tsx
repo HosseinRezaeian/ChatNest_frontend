@@ -23,7 +23,7 @@ export const LeftDrawer = ({ drawerOpened, toggleDrawer }: props) => {
     const [opened, { open, close }] = useDisclosure(false);
     const [opencontactinfo, { open:openinfo, close:closeinfo  }] = useDisclosure(false);
     const { data: contacts } = useGetListContacts()
-    const [searchValue,searchSet]=useState("")
+
     const [searchTerm, setSearchTerm] = useState('');
     const filteredContacts = contacts?.filter(contact =>
         contact.target.email.includes(searchTerm)
@@ -55,14 +55,17 @@ export const LeftDrawer = ({ drawerOpened, toggleDrawer }: props) => {
             </Stack>
 
             <Modal size="md" opened={opened} onClose={close} title="contacts">
-                <TextInput onChange={(e) => { setSearchTerm(e.currentTarget.value.trim()) }} placeholder='جستوجو...' pb={"20"}></TextInput>
-                <TextInput onChange={(e)=>{searchSet(e.currentTarget.value)}} placeholder={"search Email"} rightSection={
-                    <ActionIcon onClick={()=>{
-                        close()
-                        add_contacts({search:searchValue})
+                <TextInput onChange={(e)=>{setSearchTerm(e.currentTarget.value)}} placeholder='جستوجو...' rightSection={filteredContacts?.length==0?
+                    
+                    
+                    (<ActionIcon onClick={()=>{close()
+                      add_contacts({search:searchTerm})
+                      setSearchTerm('')
                     }}>
                         <IconPencilSearch size={24} />
-                    </ActionIcon>
+
+                        
+                    </ActionIcon>):(<></>)
                 }></TextInput>
 
 
