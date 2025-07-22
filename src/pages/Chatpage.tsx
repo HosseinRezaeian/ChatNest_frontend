@@ -1,9 +1,11 @@
 import { ProfileApi } from '@/api/ profileApi';
 import { useProfileQuery } from '@/api/api';
 import { useGetListContacts } from '@/api/Contact';
+import { useGetListPrivateRooms } from '@/api/room';
 import Rooms from '@/components/ChatPageComponents/rooms';
 import { setUser } from '@/features/users/userSlice';
 import { Icontact } from '@/models/contactModel';
+import { IPrivateRoom } from '@/models/PrivateRoomModel';
 import {
   AppShell,
   Burger,
@@ -34,11 +36,12 @@ function formatTime(date: Date) {
 export function ChatAppShell() {
   const { data: userProfile,isSuccess, isLoading, error } = useProfileQuery();
   const { data: contacts } = useGetListContacts()
+  const { data: privateRoom } = useGetListPrivateRooms()
   const [opened, { toggle }] = useDisclosure();
   const theme = useMantineTheme();
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [message, setMessage] = useState('');
-  const [currentContact, setCurrentContact] = useState<Icontact | null>(null);
+  const [currentPrivate, setcurrentPrivate] = useState<IPrivateRoom | null>(null);
 const dispatch = useDispatch();
 useEffect(() => {
     if (isSuccess && userProfile) {
@@ -107,7 +110,7 @@ useEffect(() => {
           </Text>
         </Group>
         <Text size="md" fw={600} color="#75e6da">
-        {currentContact ? currentContact.target.username : ""}
+        {currentPrivate ? currentPrivate.name : ""}
         {/* {JSON.stringify(currentContact)} */}
         </Text>
       </AppShell.Header>
@@ -118,7 +121,7 @@ useEffect(() => {
         component={ScrollArea}
         style={{ backgroundColor: '#2c2c3e', color: 'white' }}
       >
-        <Rooms navbarOpened={opened} toggleNavbar={toggle} contacts={contacts as Icontact[]} currentContact={currentContact as Icontact} setCurrentContact={setCurrentContact}  />
+        <Rooms navbarOpened={opened} toggleNavbar={toggle} privateroom={privateRoom as IPrivateRoom[]} currentContact={currentPrivate as IPrivateRoom} setCurrentContact={setcurrentPrivate}  />
       </AppShell.Navbar>
 
       <AppShell.Main>

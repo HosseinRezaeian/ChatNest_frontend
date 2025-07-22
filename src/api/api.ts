@@ -71,7 +71,8 @@ export const api = createApi({
   tagTypes: [
     'User',
     'Auth',
-    'Contacts'
+    'Contacts',
+    "PrivateRoom"
 
   ],
 

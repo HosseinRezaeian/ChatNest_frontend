@@ -5,6 +5,7 @@ import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { IconArrowLeft, IconHeart, IconMenu2 } from "@tabler/icons-react";
 import { useState } from "react";
 import { LeftDrawer } from "./leftDrawer";
+import { IPrivateRoom } from "@/models/PrivateRoomModel";
 
 
 
@@ -12,21 +13,21 @@ import { LeftDrawer } from "./leftDrawer";
 
 
 interface ContentsProps {
-    contacts: Icontact[]
-    currentContact: Icontact | null;
-    setCurrentContact: (contact: Icontact) => void;
+    privateroom: IPrivateRoom[]
+    currentContact: IPrivateRoom | null;
+    setCurrentContact: (privateroom: IPrivateRoom) => void;
     navbarOpened: boolean;
     toggleNavbar: () => void;
 }
 
 
-const Rooms = ({ contacts, currentContact, setCurrentContact, navbarOpened, toggleNavbar }: ContentsProps) => {
+const Rooms = ({ privateroom, currentContact, setCurrentContact, navbarOpened, toggleNavbar }: ContentsProps) => {
     const [drawerOpened, { toggle: toggleDrawer }] = useDisclosure(false);
 
     const isMobile = useMediaQuery('(max-width: 768px)');
     const [searchTerm, setSearchTerm] = useState('');
-    const filteredContacts = contacts?.filter(contact =>
-        contact.target.username.includes(searchTerm)
+    const filteredContacts = privateroom?.filter(contact =>
+        contact.name.includes(searchTerm)
     );
 
     return (
@@ -57,7 +58,7 @@ const Rooms = ({ contacts, currentContact, setCurrentContact, navbarOpened, togg
             <TextInput onChange={(e) => { setSearchTerm(e.currentTarget.value.trim()) }} placeholder='جستوجو...' pb={"20"}></TextInput>
             {filteredContacts?.map((contact) => (
                 <Box
-                    key={contact.target.username}
+                    key={contact.name}
                     mb="sm"
                     onClick={() => {
                         setCurrentContact(contact);
@@ -75,8 +76,8 @@ const Rooms = ({ contacts, currentContact, setCurrentContact, navbarOpened, togg
                         userSelect: 'none',
                     }}
                 >
-                    <Avatar size={30} radius="xl">{contact.target.username}</Avatar>
-                    <Text>{contact.target.username}</Text>
+                    <Avatar size={30} radius="xl">{contact.name}</Avatar>
+                    <Text>{contact.name}</Text>
                 </Box>
             ))}
 
