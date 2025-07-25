@@ -2,7 +2,9 @@ import { ProfileApi } from '@/api/ profileApi';
 import { useProfileQuery } from '@/api/api';
 import { useGetListContacts } from '@/api/Contact';
 import { useGetListPrivateRooms } from '@/api/room';
+import ChatConnect from '@/components/ChatPageComponents/chatConnect';
 import Rooms from '@/components/ChatPageComponents/rooms';
+import { privateRoomName } from '@/components/utils/RoomNameRemoveEmail';
 import { setUser } from '@/features/users/userSlice';
 import { Icontact } from '@/models/contactModel';
 import { IPrivateRoom } from '@/models/PrivateRoomModel';
@@ -29,7 +31,6 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from "react-redux";
 
 function formatTime(date: Date) {
-  // قالب زمان: ساعت:دقیقه (24 ساعته)
   return `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
 }
 
@@ -110,7 +111,7 @@ useEffect(() => {
           </Text>
         </Group>
         <Text size="md" fw={600} color="#75e6da">
-        {currentPrivate ? currentPrivate.name : ""}
+        {currentPrivate ? privateRoomName({room:currentPrivate.name,email:userProfile?.email??""}) : ""}
         {/* {JSON.stringify(currentContact)} */}
         </Text>
       </AppShell.Header>
@@ -121,78 +122,30 @@ useEffect(() => {
         component={ScrollArea}
         style={{ backgroundColor: '#2c2c3e', color: 'white' }}
       >
-        <Rooms navbarOpened={opened} toggleNavbar={toggle} privateroom={privateRoom as IPrivateRoom[]} currentContact={currentPrivate as IPrivateRoom} setCurrentContact={setcurrentPrivate}  />
+        <Rooms navbarOpened={opened} toggleNavbar={toggle} privateroom={privateRoom as IPrivateRoom[]} currentRoom={currentPrivate as IPrivateRoom} setCurrentRoom={setcurrentPrivate}  />
       </AppShell.Navbar>
 
       <AppShell.Main>
-        {/* {JSON.stringify(contactss)} */}
-        {/* بخش پیام‌ها */}
-        <ScrollArea style={{ flex: 1, padding: rem(16) }}>
-          <Stack gap={8}>
-            {userProfile ? userProfile.username : 'در حال بارگذاری...'}
-            {/* {messages.map(({ text, fromMe, time }, i) => (
-              <Box
-                key={i}
-                style={{
-                  alignSelf: fromMe ? 'flex-end' : 'flex-start',
-                  maxWidth: '70%',
-                }}
-              >
-                <Paper
-                  shadow="xs"
-                  p="sm"
-                  radius="md"
-                  style={{
-                    backgroundColor: fromMe ? '#189ab4' : '#d4f1f4',
-                    color: fromMe ? 'white' : '#05445e',
-                    position: 'relative',
-                  }}
-                >
-                  {text}
-                  <Text
-                    size="xs"
-                    color={fromMe ? '#bbe1fa' : '#4a6572'}
-                    style={{ marginTop: rem(4), textAlign: 'right', fontWeight: 'bold' }}
-                  >
-                    {time}
-                  </Text>
-                </Paper>
-              </Box>
-            ))} */}
-          </Stack>
-        </ScrollArea>
+                {currentPrivate ?  
+                
+                (
+                  <ChatConnect chatId={currentPrivate.id}/>
+                )
+                
+                : ""}
 
-        <Divider />
 
-        {/* بخش ورودی پیام */}
-        <Group
-          style={{
-            width: '100%',
-            padding: rem(10),
-            backgroundColor: 'white',
-          }}
 
-        >
-          <Textarea
-            value={message}
-            onChange={(e) => setMessage(e.currentTarget.value)}
-            placeholder="پیام بنویس..."
-            minRows={1}
-            autosize
-            style={{ flexGrow: 1 }}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                handleSend();
-              }
-            }}
-          />
-          <ActionIcon color="blue" size={36} onClick={handleSend}>
-            <IconSend size={20} />
-          </ActionIcon>
-        </Group>
+        
       </AppShell.Main>
     </AppShell>
   );
 }
+
+
+
+
+
+
+
 

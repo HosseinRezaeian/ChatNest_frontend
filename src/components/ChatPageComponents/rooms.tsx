@@ -6,6 +6,9 @@ import { IconArrowLeft, IconHeart, IconMenu2 } from "@tabler/icons-react";
 import { useState } from "react";
 import { LeftDrawer } from "./leftDrawer";
 import { IPrivateRoom } from "@/models/PrivateRoomModel";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/store";
+import { privateRoomName } from "../utils/RoomNameRemoveEmail";
 
 
 
@@ -14,21 +17,25 @@ import { IPrivateRoom } from "@/models/PrivateRoomModel";
 
 interface ContentsProps {
     privateroom: IPrivateRoom[]
-    currentContact: IPrivateRoom | null;
-    setCurrentContact: (privateroom: IPrivateRoom) => void;
+    currentRoom: IPrivateRoom | null;
+    setCurrentRoom: (privateroom: IPrivateRoom) => void;
     navbarOpened: boolean;
     toggleNavbar: () => void;
 }
 
 
-const Rooms = ({ privateroom, currentContact, setCurrentContact, navbarOpened, toggleNavbar }: ContentsProps) => {
+const Rooms = ({ privateroom, currentRoom, setCurrentRoom, navbarOpened, toggleNavbar }: ContentsProps) => {
     const [drawerOpened, { toggle: toggleDrawer }] = useDisclosure(false);
-
+     const user = useSelector((state: RootState) => state.user.user);
     const isMobile = useMediaQuery('(max-width: 768px)');
     const [searchTerm, setSearchTerm] = useState('');
-    const filteredContacts = privateroom?.filter(contact =>
+    const filteredrooms = privateroom?.filter(contact =>
         contact.name.includes(searchTerm)
     );
+
+
+
+
 
     return (
         <>
@@ -54,14 +61,14 @@ const Rooms = ({ privateroom, currentContact, setCurrentContact, navbarOpened, t
 
             </Flex>
 
-            <LeftDrawer drawerOpened={drawerOpened} toggleDrawer={toggleDrawer}/>
+            <LeftDrawer drawerOpened={drawerOpened} toggleDrawer={toggleDrawer} />
             <TextInput onChange={(e) => { setSearchTerm(e.currentTarget.value.trim()) }} placeholder='جستوجو...' pb={"20"}></TextInput>
-            {filteredContacts?.map((contact) => (
+            {filteredrooms?.map((room) => (
                 <Box
-                    key={contact.name}
+                    key={room.name}
                     mb="sm"
                     onClick={() => {
-                        setCurrentContact(contact);
+                        setCurrentRoom(room);
                         if (isMobile) toggleNavbar();
                     }}
                     style={{
@@ -72,12 +79,13 @@ const Rooms = ({ privateroom, currentContact, setCurrentContact, navbarOpened, t
                         padding: rem(8),
                         borderRadius: rem(6),
                         transition: 'background 0.2s ease',
-                        backgroundColor: currentContact === contact ? '#189ab4' : 'transparent',
+                        backgroundColor: currentRoom === room ? '#189ab4' : 'transparent',
                         userSelect: 'none',
                     }}
                 >
-                    <Avatar size={30} radius="xl">{contact.name}</Avatar>
-                    <Text>{contact.name}</Text>
+                    <Avatar size={30} radius="xl">{privateRoomName({room:room.name,email:user?.email??""})}</Avatar>
+
+                    <Text>{privateRoomName({room:room.name,email:user?.email??""})}</Text>
                 </Box>
             ))}
 
