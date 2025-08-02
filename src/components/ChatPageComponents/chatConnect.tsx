@@ -36,7 +36,8 @@ const ChatConnect = ({ chatId }: ContentsProps) => {
   const [message, setMessage] = useState('');
   const handleSend = (text: string) => {
     if (readyState === WebSocket.OPEN) {
-      sendMessage(JSON.stringify({ message: text }));
+      sendMessage(JSON.stringify({ message: text }))
+      setMessage("")
     }
   };
 
