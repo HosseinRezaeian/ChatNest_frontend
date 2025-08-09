@@ -7,6 +7,8 @@ import { IconPencilSearch, IconSearch } from "@tabler/icons-react";
 import { useGetListContacts, useSearchContacts } from "@/api/Contact";
 import { useEffect, useState } from "react";
 import { notifications } from "@mantine/notifications";
+import { useGetOrMakePrivetRoom } from "@/api/room";
+import { IPrivateRoom } from "@/models/PrivateRoomModel";
 
 
 
@@ -15,14 +17,16 @@ import { notifications } from "@mantine/notifications";
 
 type props = {
     drawerOpened: boolean,
-    toggleDrawer: () => void
+    toggleDrawer: () => void,
+    setCurrentRoom: (privateroom: IPrivateRoom) => void;
 }
 
-export const LeftDrawer = ({ drawerOpened, toggleDrawer }: props) => {
+export const LeftDrawer = ({ drawerOpened, toggleDrawer,setCurrentRoom }: props) => {
     const user = useSelector((state: RootState) => state.user.user);
     const [opened, { open, close }] = useDisclosure(false);
     const [opencontactinfo, { open:openinfo, close:closeinfo  }] = useDisclosure(false);
     const { data: contacts } = useGetListContacts()
+    const [getorcreate,{data:getprivateroom,isSuccess:success}]=useGetOrMakePrivetRoom()
 
     const [searchTerm, setSearchTerm] = useState('');
     const filteredContacts = contacts?.filter(contact =>
@@ -45,6 +49,19 @@ export const LeftDrawer = ({ drawerOpened, toggleDrawer }: props) => {
       });
     }
   }, [isSuccess, isError]);
+
+  const GCRoom=(email:string)=>{
+  getorcreate({email})
+  }
+
+  useEffect(()=>{
+    if(success){
+      setCurrentRoom(getprivateroom)
+      close()
+      toggleDrawer()
+    }
+  },[!success])
+
     return (
         <Drawer position="left" size="xs" opened={drawerOpened} onClose={toggleDrawer} title="">
             <Stack>
@@ -82,7 +99,7 @@ export const LeftDrawer = ({ drawerOpened, toggleDrawer }: props) => {
 {
     filteredContacts?.map((contact)=>(
 
-        <Table.Tr onClick={openinfo} key={contact.id}> 
+        <Table.Tr onClick={()=>GCRoom(contact.target.email)} key={contact.id}> 
         <Table.Th><Avatar size={20}></Avatar></Table.Th>
         <Table.Th>{contact.target.email}</Table.Th>
         <Table.Th>{contact.target.username}</Table.Th>
@@ -100,6 +117,7 @@ export const LeftDrawer = ({ drawerOpened, toggleDrawer }: props) => {
 
 
             <Modal size="md" opened={opencontactinfo} onClose={closeinfo} title="">
+
             </Modal>
         </Drawer>
     )

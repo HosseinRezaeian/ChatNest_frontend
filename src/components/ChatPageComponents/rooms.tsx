@@ -26,7 +26,7 @@ interface ContentsProps {
 
 const Rooms = ({ privateroom, currentRoom, setCurrentRoom, navbarOpened, toggleNavbar }: ContentsProps) => {
     const [drawerOpened, { toggle: toggleDrawer }] = useDisclosure(false);
-     const user = useSelector((state: RootState) => state.user.user);
+    const user = useSelector((state: RootState) => state.user.user);
     const isMobile = useMediaQuery('(max-width: 768px)');
     const [searchTerm, setSearchTerm] = useState('');
     const filteredrooms = privateroom?.filter(contact =>
@@ -61,7 +61,7 @@ const Rooms = ({ privateroom, currentRoom, setCurrentRoom, navbarOpened, toggleN
 
             </Flex>
 
-            <LeftDrawer drawerOpened={drawerOpened} toggleDrawer={toggleDrawer} />
+            <LeftDrawer setCurrentRoom={setCurrentRoom}  drawerOpened={drawerOpened} toggleDrawer={toggleDrawer} />
             <TextInput onChange={(e) => { setSearchTerm(e.currentTarget.value.trim()) }} placeholder='جستوجو...' pb={"20"}></TextInput>
             {filteredrooms?.map((room) => (
                 <Box

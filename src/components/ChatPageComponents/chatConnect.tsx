@@ -12,6 +12,7 @@ import { privateRoomName } from "../utils/RoomNameRemoveEmail";
 // import useWebSocket from "@/api/webSocketChat";
 
 import useWebSocket from 'react-use-websocket';
+import { GetTocken } from "@/api/TockenSocket";
 
 const baseWsUrl = import.meta.env.VITE_WS_URL;
 
@@ -23,14 +24,29 @@ interface ContentsProps {
 
 
 const ChatConnect = ({ chatId }: ContentsProps) => {
-  const access = localStorage.getItem('access');
+
+  const { data: tokenSocket, isSuccess } = GetTocken();
+  const [socketUrl, setSocketUrl] = useState<string | null>(null);
+  const User = useSelector((state: RootState) => state.user.user);
+
+
+
 
   const { sendMessage, lastMessage, readyState } = useWebSocket(
-    `${baseWsUrl}/ws/chat/${chatId}/?token=${access}`,
+    socketUrl,
     {
       shouldReconnect: () => true,
     }
-  );
+  )
+
+  useEffect(() => {
+    setSocketUrl(isSuccess && tokenSocket?.token
+      ? `${baseWsUrl}/ws/chat/${chatId}/?token=${tokenSocket.token}`
+      : null)
+  }, [isSuccess, tokenSocket, chatId])
+
+
+
 
   const [messages, setMessages] = useState<any[]>([]);
   const [message, setMessage] = useState('');
@@ -45,30 +61,33 @@ const ChatConnect = ({ chatId }: ContentsProps) => {
   useEffect(() => {
     if (lastMessage !== null) {
       const data = JSON.parse(lastMessage.data);
+      console.log(data)
       setMessages(prev => [...prev, data]);
     }
-  }, [lastMessage]);
+  }, [lastMessage, tokenSocket]);
+
   return (
     <>
       <ScrollArea style={{ flex: 1, padding: rem(16) }}>
+      {/* {JSON.stringify(user)} */}
 
         <Stack gap={8}>
 
-          {/* {messages.map((e)=>(
-<Box bg={"blue"}>
-  {e.message}
-</Box>
-      ))} */}
 
 
-          {messages.map(({ message, user, time }, i) => (
+
+          {messages.map(({ message, user_email, user, time }, i) => (
+
+
+
             <Box
               key={i}
               style={{
-                alignSelf: user ? 'flex-end' : 'flex-start',
+                alignSelf: user_email==User?.email ? 'flex-end' : 'flex-start',
                 maxWidth: '70%',
               }}
             >
+
               <Paper
                 shadow="xs"
                 p="sm"
@@ -79,6 +98,7 @@ const ChatConnect = ({ chatId }: ContentsProps) => {
                   position: 'relative',
                 }}
               >
+
                 {message}
                 <Text
                   size="xs"
@@ -89,7 +109,11 @@ const ChatConnect = ({ chatId }: ContentsProps) => {
                 </Text>
               </Paper>
             </Box>
+
           ))}
+
+
+
         </Stack>
       </ScrollArea>
 

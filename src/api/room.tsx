@@ -16,20 +16,21 @@ export const RoomApi = api.injectEndpoints({
       providesTags: () => [{ type: 'PrivateRoom', id: 'LIST' }],
     }),
 
-    // searchContacts: builder.mutation<{ id: string }, { search: string }>({
-    //   query: ({ search }) => ({
-    //     url: 'contacts/add_contact/',
-    //     method: 'POST',
-    //     params: { search },
-
-    //   }),
-    //   invalidatesTags: [{ type: 'Contacts', id: 'LIST' }]
-    // })
+    GetOrMakePrivetRoom: builder.mutation<IPrivateRoom, { email: string }>({
+      query: ({ email }) => ({
+        url: 'private_rooms/create-or-get/',
+        method: 'POST',
+        body: { "email":email },
+      }),
+      invalidatesTags: [{ type: 'PrivateRoom', id: 'LIST' }]
+    })
 
   }),
 });
 
 export const { 
-  useGetListPrivateRoomsQuery:useGetListPrivateRooms
+  useGetListPrivateRoomsQuery:useGetListPrivateRooms,
+  useGetOrMakePrivetRoomMutation:useGetOrMakePrivetRoom
+
 
 } = RoomApi;
