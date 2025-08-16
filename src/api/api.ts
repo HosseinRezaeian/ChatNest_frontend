@@ -15,7 +15,7 @@ const baseQuery = fetchBaseQuery({
 });
 
 const baseQueryWithReauth = async (args: string | FetchArgs, api: any, extraOptions: any) => {
-  let result = await baseQuery(args, api, extraOptions);
+  const result = await baseQuery(args, api, extraOptions);
 
   if (result.error && result.error.status === 401) {
     console.log('Access token expired, trying to refresh...');
@@ -37,9 +37,7 @@ const baseQueryWithReauth = async (args: string | FetchArgs, api: any, extraOpti
         localStorage.setItem('access', newAccess);
         const retryResult = await baseQuery(args, api, extraOptions);
         return retryResult;
-      } else {
-        console.log('Refresh token failed');
-      }
+      } 
     } else {
       console.log('No refresh token found');
     }
@@ -72,6 +70,7 @@ export const api = createApi({
     'User',
     'Auth',
     'Contacts',
+    "Message",
     "PrivateRoom"
 
   ],

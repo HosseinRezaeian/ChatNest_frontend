@@ -1,4 +1,4 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+
 import { api } from './api';
 import { IPrivateRoom } from '@/models/PrivateRoomModel';
 
@@ -20,7 +20,7 @@ export const RoomApi = api.injectEndpoints({
       query: ({ email }) => ({
         url: 'private_rooms/create-or-get/',
         method: 'POST',
-        body: { "email":email },
+        body: { email },
       }),
       invalidatesTags: [{ type: 'PrivateRoom', id: 'LIST' }]
     })
